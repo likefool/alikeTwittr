@@ -11,6 +11,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
     <application
         android:name="com.yahoo.apps.aliketweetr.RestApplication"
         android:allowBackup="true"
@@ -26,8 +31,8 @@
 
         <activity
             android:name="com.yahoo.apps.aliketweetr.activities.LoginActivity"
-            android:theme="@style/AppTheme"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,6 +48,10 @@
                     android:host="cprest"
                     android:scheme="oauth" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.yahoo.apps.aliketweetr.activities.TimelineActivity"
+            android:label="@string/title_activity_timeline" >
         </activity>
     </application>
 
