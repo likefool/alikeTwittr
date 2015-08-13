@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.codepath.apps.restclienttemplate"
+    package="com.likefool.apps.aliketweetr"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -17,7 +17,7 @@
         android:maxSdkVersion="18" />
 
     <application
-        android:name="com.yahoo.apps.aliketweetr.RestApplication"
+        android:name=".RestApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -30,7 +30,7 @@
             android:value="1" />
 
         <activity
-            android:name="com.yahoo.apps.aliketweetr.activities.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" >
             <intent-filter>
@@ -45,13 +45,17 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="cprest"
+                    android:host="codepathtweets"
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.yahoo.apps.aliketweetr.activities.TimelineActivity"
+            android:name=".activities.TimelineActivity"
             android:label="@string/title_activity_timeline" >
+        </activity>
+        <activity
+            android:name=".activities.PostActivity"
+            android:label="@string/title_activity_post" >
         </activity>
     </application>
 

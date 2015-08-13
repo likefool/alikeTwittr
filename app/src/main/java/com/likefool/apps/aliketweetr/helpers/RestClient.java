@@ -1,9 +1,10 @@
-package com.yahoo.apps.aliketweetr.helpers;
+package com.likefool.apps.aliketweetr.helpers;
 
 import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.scribe.builder.api.Api;
@@ -23,9 +24,9 @@ import org.scribe.builder.api.TwitterApi;
  */
 public class RestClient extends OAuthBaseClient {
 	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
-	public static final String REST_URL = "http://api.twitter.com"; // Change this, base API URL
-	public static final String REST_CONSUMER_KEY = "SOME_KEY";       // Change this
-	public static final String REST_CONSUMER_SECRET = "SOME_SECRET"; // Change this
+	public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
+	public static final String REST_CONSUMER_KEY = "ya4dO6CFxIpfgecF3cPcJhaef";       // Change this
+	public static final String REST_CONSUMER_SECRET = "xxK4PWxSJnbERyIADldCYJiMFTzHyXwDLK8TDAZEQZcWJvRQ8O"; // Change this
 	public static final String REST_CALLBACK_URL = "oauth://codepathtweets"; // Change this (here and in manifest)
 
 	public RestClient(Context context) {
@@ -45,6 +46,12 @@ public class RestClient extends OAuthBaseClient {
 		params.put("status", body);
 		getClient().post(apiUrl, params, handler);
 	}
+
+    public void getUserInfo(JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("account/verify_credentials.json");
+        //RequestParams params = new RequestParams();
+        getClient().get(apiUrl, null, handler);
+    }
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");

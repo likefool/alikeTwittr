@@ -1,8 +1,8 @@
-package com.yahoo.apps.aliketweetr;
+package com.likefool.apps.aliketweetr;
 
 import android.content.Context;
 
-import com.yahoo.apps.aliketweetr.helpers.RestClient;
+import com.likefool.apps.aliketweetr.helpers.RestClient;
 
 /*
  * This is the Android application itself and is used to configure various settings

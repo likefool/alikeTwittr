@@ -1,13 +1,13 @@
-package com.yahoo.apps.aliketweetr.activities;
+package com.likefool.apps.aliketweetr.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
-import com.codepath.apps.restclienttemplate.R;
+import com.likefool.apps.aliketweetr.R;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
-import com.yahoo.apps.aliketweetr.helpers.RestClient;
+import com.likefool.apps.aliketweetr.helpers.RestClient;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 

@@ -1,4 +1,4 @@
-package com.yahoo.apps.aliketweetr.models;
+package com.likefool.apps.aliketweetr.models;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
