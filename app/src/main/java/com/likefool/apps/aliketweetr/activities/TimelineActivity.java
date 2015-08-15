@@ -2,11 +2,13 @@ package com.likefool.apps.aliketweetr.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.likefool.apps.aliketweetr.R;
 import com.likefool.apps.aliketweetr.RestApplication;
@@ -28,6 +30,8 @@ public class TimelineActivity extends ActionBarActivity {
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter aTweets;
     private ListView lvTweets;
+    private SwipeRefreshLayout swipeContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,25 @@ public class TimelineActivity extends ActionBarActivity {
                 populateTimeline(page);
             }
         });
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                aTweets.clear();
+                populateTimeline(1);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
     }
 
     private void populateTimeline(int i) {
@@ -55,11 +78,14 @@ public class TimelineActivity extends ActionBarActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 aTweets.addAll(Tweet.fromJSONArray(json));
+                // Now we call setRefreshing(false) to signal refresh has finished
+                swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
                 Log.e("ERROR", "populateTimeline fail, response: " + response.toString());
+                Toast.makeText(getApplicationContext(), "Timeline Fail", Toast.LENGTH_SHORT).show();
 
             }
 

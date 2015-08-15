@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import com.likefool.apps.aliketweetr.R;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
@@ -38,6 +39,8 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	@Override
 	public void onLoginFailure(Exception e) {
 		e.printStackTrace();
+		Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+
 	}
 
 	// Click handler method for the button used to start OAuth flow
