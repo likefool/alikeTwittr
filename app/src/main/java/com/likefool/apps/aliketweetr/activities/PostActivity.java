@@ -2,6 +2,8 @@ package com.likefool.apps.aliketweetr.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +27,19 @@ public class PostActivity extends ActionBarActivity {
     private TextView tvUserName;
     private EditText etPost;
     private RestClient client;
+    private TextView tvPostCount;
+
+    final TextWatcher txwatcher = new TextWatcher() {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            tvPostCount.setText(String.valueOf(140 - s.length()));
+        }
+
+        public void afterTextChanged(Editable s) {
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +47,10 @@ public class PostActivity extends ActionBarActivity {
         setContentView(R.layout.activity_post);
         ivUserImage = (ImageView) findViewById(R.id.ivUserImage);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
+        tvPostCount = (TextView) findViewById(R.id.tvCount);
         etPost = (EditText) findViewById(R.id.etPost);
+        etPost.addTextChangedListener(txwatcher);
+
         client = RestApplication.getRestClient();
         showUserInfo();
     }
