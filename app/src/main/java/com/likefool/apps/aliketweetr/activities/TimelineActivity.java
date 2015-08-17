@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.activeandroid.query.Select;
 import com.likefool.apps.aliketweetr.R;
 import com.likefool.apps.aliketweetr.RestApplication;
 import com.likefool.apps.aliketweetr.adapters.TweetsArrayAdapter;
@@ -23,12 +24,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TimelineActivity extends ActionBarActivity {
 
     private RestClient client;
     private ArrayList<Tweet> tweets;
-    private TweetsArrayAdapter aTweets;
+    private TweetsArrayAdapter tweetAdapter;
     private ListView lvTweets;
     private SwipeRefreshLayout swipeContainer;
 
@@ -40,10 +42,10 @@ public class TimelineActivity extends ActionBarActivity {
 
         lvTweets = (ListView) findViewById(R.id.lvTweets);
         tweets = new ArrayList<>();
-        aTweets = new TweetsArrayAdapter(this, tweets);
-        lvTweets.setAdapter(aTweets);
+        tweetAdapter = new TweetsArrayAdapter(this, tweets);
+        lvTweets.setAdapter(tweetAdapter);
         client = RestApplication.getRestClient(); // singleton client
-        aTweets.clear();
+        tweetAdapter.clear();
         populateTimeline(1);
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
             @Override
@@ -60,7 +62,7 @@ public class TimelineActivity extends ActionBarActivity {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                aTweets.clear();
+                tweetAdapter.clear();
                 populateTimeline(1);
             }
         });
@@ -77,15 +79,24 @@ public class TimelineActivity extends ActionBarActivity {
             // Success
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                aTweets.addAll(Tweet.fromJSONArray(json));
+                tweetAdapter.addAll(Tweet.fromJSONArray(json));
                 // Now we call setRefreshing(false) to signal refresh has finished
                 swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
-                Log.e("ERROR", "populateTimeline fail, response: " + response.toString());
+                if (response != null) {
+                    Log.e("ERROR", "populateTimeline fail, response: " + response.toString());
+                }
                 Toast.makeText(getApplicationContext(), "Timeline Fail", Toast.LENGTH_SHORT).show();
+
+                // Query ActiveAndroid for list of data
+                List<Tweet> localTweets = new Select().from(Tweet.class)
+                        .orderBy("CreatedAt DESC").limit(100).execute();
+                tweetAdapter.addAll(localTweets);
+
+                swipeContainer.setRefreshing(false);
 
             }
 
@@ -124,7 +135,7 @@ public class TimelineActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK){
-            aTweets.clear();
+            tweetAdapter.clear();
             populateTimeline(1);
         }
     }

@@ -13,10 +13,15 @@ import java.util.ArrayList;
 /**
  * Created by aliku on 2015/8/12.
  */
-public class Tweet {
+@Table(name = "Tweets")
+public class Tweet extends Model {
+    @Column(name = "Body")
     private  String body;
+    @Column(name = "Uid")
     private long uid; // unique id for the tweet
+    @Column(name = "User")
     private User user;
+    @Column(name = "CreatedAt")
     private String createdAt;
 
     public String getBody() {
@@ -42,6 +47,7 @@ public class Tweet {
             tweet.uid = jsonObject.getLong("id");
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+            tweet.save(); // insert into sqllite
         } catch (JSONException e) {
             e.printStackTrace();
         }
